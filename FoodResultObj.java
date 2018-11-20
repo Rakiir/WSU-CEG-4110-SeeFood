@@ -1,10 +1,11 @@
 package com.wsu.caltabellotta.seefood;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 public class FoodResultObj {
 
-    private Image img;
+    private Bitmap img;
     private double stat1, stat2;
 
     public FoodResultObj() {
@@ -13,16 +14,16 @@ public class FoodResultObj {
         double stat2;
     }
 
-    public FoodResultObj(Image newImg, double newStat1, double newStat2) {
+    public FoodResultObj(Bitmap newImg, double newStat1, double newStat2) {
         this.img = newImg;
         this.stat1 = newStat1;
         this.stat2 = newStat2;
     }
 
-    public Image getImage() {
+    public Bitmap getImage() {
         return this.img;
     }
-    public void setImage(Image newImg) {
+    public void setImage(Bitmap newImg) {
         this.img = newImg;
     }
 
