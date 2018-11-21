@@ -34,8 +34,13 @@ public class ResultsViewActivity extends AppCompatActivity {
         Bitmap myBM = BitmapFactory.decodeFile(sro.getFileString());
         FoodResultObj ob1 = new FoodResultObj();
         ob1.setImage(myBM);
+        String array[] = new String[3];
+        String plsgod = sro.getReceivedString();
+        array =  plsgod.split("XX");
+        ob1.setStat1(Double.parseDouble(array[0]));
+        ob1.setStat2(Double.parseDouble(array[1]));
         resultsVector.add(ob1);
-
+        imageView.setImageBitmap(ob1.getImage());
 
         Button returnMainMenu = findViewById(R.id.mainMenuBtn);
         returnMainMenu.setOnClickListener(new View.OnClickListener() {

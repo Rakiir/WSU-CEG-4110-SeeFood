@@ -18,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
         String[] PERMISSIONS = {
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.CAMERA,
-                Manifest.permission.INTERNET
+                android.Manifest.permission.INTERNET,
+                android.Manifest.permission.ACCESS_NETWORK_STATE
         };
         ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
         setContentView(R.layout.activity_main);

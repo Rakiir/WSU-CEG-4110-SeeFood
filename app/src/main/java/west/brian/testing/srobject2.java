@@ -8,7 +8,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.format.Time;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -18,7 +20,11 @@ import com.android.volley.cache.plus.ImageRequest;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.MultiPartRequest;
 import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,6 +33,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static android.content.ContentValues.TAG;
 
@@ -85,24 +94,50 @@ public class srobject2 implements Serializable {
         return urlGetImage;
     }
     public void sendPic(Context c){
+        RequestQueue mRequestQueue = Volley.newRequestQueue(c.getApplicationContext());
+        RequestFuture<String> future = RequestFuture.newFuture();
 
-        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, urlUpload,
-                new Response.Listener<String>() {
+        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, urlUpload, future, future);
+                /*new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        System.out.println("Response");
                         receivedString = response;
+                        //try{
+                            //JSONObject res = new JSONObject(response);
+                            //receivedString = res.getString("message");
+                        //}catch (JSONException e){
+
+                        //}
+
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+               Log.e("Error", "Error:", error);
+                System.out.println("Error");
+               System.out.println(error);
             }
-        });
+        });*/
         //smr.addStringParam("param string", " data text");
-        smr.addFile("param file", fileString);
+        smr.addFile("media", fileString);
+        //smr.setShouldCache(true);
 
-        RequestQueue mRequestQueue = Volley.newRequestQueue(c.getApplicationContext());
+
         mRequestQueue.add(smr);
+        try {
+            receivedString = future.get(10, TimeUnit.SECONDS);
+        }catch (InterruptedException e){
+            System.out.println(e);
+        }catch (ExecutionException e){
+            System.out.println(e);
+        }catch (TimeoutException e){
+            System.out.println(e);
+        }
+        System.out.println("success");
+
+
 
 
     }
@@ -124,6 +159,7 @@ public class srobject2 implements Serializable {
         smr2.addFile("param file", fileString);
         RequestQueue mRequestQueue = Volley.newRequestQueue(c.getApplicationContext());
         mRequestQueue.add(smr2);
+        mRequestQueue.start();
         MultiPartRequest<Bitmap> getPic = new MultiPartRequest<Bitmap>(Request.Method.GET, urlGetImage,
                 new Response.Listener<Bitmap>() {
                     @Override
@@ -157,7 +193,8 @@ public class srobject2 implements Serializable {
         };
         getPic.addStringParam("type", typeParameter);//Give an integer as a string to get file at that position in the directory.
         //smr.addFile("param file", imagePath);
-
+        mRequestQueue.stop();
+        mRequestQueue.start();
 
         mRequestQueue.add(getPic);
     }

@@ -87,6 +87,10 @@ public class CameraActivity extends AppCompatActivity {
                 out.close();
                 sro.setFileString(file.getPath());
                 sro.sendPic(c);
+                //while(sro.getReceivedString()==null){
+                   // System.out.println("here");
+                //}
+
                 Intent intent = new Intent(c, ResultsViewActivity.class);
                 intent.putExtra("sro", sro);
                 startActivity(intent);
