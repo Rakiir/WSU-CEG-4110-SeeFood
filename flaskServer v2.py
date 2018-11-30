@@ -1,6 +1,3 @@
-#Author Dylan Dunham - Flask Server for EC2 Seefood Project
-#Issues - no real way to save tf session into memory due to flask running a different context, flask g objects or flask globals could work,
-#but no one will tell me how to implement them because most of the time that will cause a race condition without semaphores or mutexes, ugh.
 import os
 import datetime
 import glob
@@ -91,13 +88,16 @@ def upload_file():
     print('failure')
 @app.route('/getphoto')
 def return_file():
+    print("In get photo")
     num = request.args.get('type')
     val = int(num)
+	print(val)
     dirSize = len([name for name in os.listdir('/home/ubuntu/seefood-master/temp/') if os.path.isfile(name)])
     if val>dirSize:
         name = os.listdir('/home/ubuntu/seefood-master/temp/')[dirSize-1]
     else:
         name = os.listdir('/home/ubuntu/seefood-master/temp/')[val]
+	print(name)
     #print(path)
     #name = path.split('/')[4]
     return send_from_directory(app.config['UPLOAD_FOLDER'], name)
@@ -108,8 +108,10 @@ def return_num_of_files():
     return num
 @app.route('/getphotoname')
 def return_file_path():
+    print("In get photo name")
     num = request.args.get('type')
     val = int(num)
+	print(int)
     dirSize = len([name for name in os.listdir('/home/ubuntu/seefood-master/temp/') if os.path.isfile(name)])
     if val>dirSize:
         name = os.listdir('/home/ubuntu/seefood-master/temp/')[dirSize-1]
@@ -117,6 +119,7 @@ def return_file_path():
         name = os.listdir('/home/ubuntu/seefood-master/temp/')[val]
     #print(path)
     #name = name.split('/')[4]
+	print(name)
 	
     return name
 @app.route('/undo')
