@@ -104,7 +104,21 @@ def return_file():
 @app.route('/getFileAmount')
 def return_num_of_files():
     DIR = '/home/ubuntu/seefood-master/temp/'
-    return len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))])
+    num = str(len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))]))
+    return num
+@app.route('/getphotoname')
+def return_file_path():
+    num = request.args.get('type')
+    val = int(num)
+    dirSize = len([name for name in os.listdir('/home/ubuntu/seefood-master/temp/') if os.path.isfile(name)])
+    if val>dirSize:
+        name = os.listdir('/home/ubuntu/seefood-master/temp/')[dirSize-1]
+    else:
+        name = os.listdir('/home/ubuntu/seefood-master/temp/')[val]
+    #print(path)
+    #name = name.split('/')[4]
+	
+    return name
 @app.route('/undo')
 def undo():
     list_of_files = glob.glob('/path/to/folder/*') # * means all if need specific format then *.csv
