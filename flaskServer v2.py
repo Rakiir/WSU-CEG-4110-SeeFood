@@ -91,7 +91,7 @@ def return_file():
     print("In get photo")
     num = request.args.get('type')
     val = int(num)
-	print(val)
+    print(val)
     dirSize = len([name for name in os.listdir('/home/ubuntu/seefood-master/temp/') if os.path.isfile(name)])
     if val>dirSize:
         name = os.listdir('/home/ubuntu/seefood-master/temp/')[dirSize-1]
@@ -111,7 +111,7 @@ def return_file_path():
     print("In get photo name")
     num = request.args.get('type')
     val = int(num)
-	print(int)
+    print(int)
     dirSize = len([name for name in os.listdir('/home/ubuntu/seefood-master/temp/') if os.path.isfile(name)])
     if val>dirSize:
         name = os.listdir('/home/ubuntu/seefood-master/temp/')[dirSize-1]
